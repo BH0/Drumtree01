@@ -70,9 +70,8 @@
             <!-- $drum->user_id  should  become $drum->user->username  -->  
             <p>Posted by <b>{{ $drum->user_id }}</b> on <b>{{ $drum->created_at }}</b></p> 
             <b>Contact: {{ $drum->contact }}</b> 
-                <a href="#" class="bookmark">{{ Auth::user()->bookmarks()->where('drum_id', $drum->id)->first() ? Auth::user()->bookmarks()->where('drum_id', $drum->id)->first()->bookmark == 1 ? 'bookmarked' : 'bookmark' : 'bookmark'  }}</a> |
                 @if(Auth::user()->id == $drum->user_id)
-                    <a href="{{ route('drum.delete', ['id' => $drum->id] ) }}">Delete {{ $drum->drumname }}</a> 
+                    <a class="btn btn-danger" href="{{ route('drum.delete', ['id' => $drum->id] ) }}">Delete {{ $drum->drumname }}</a> 
                 @endif 
         </article>
     @endif 
@@ -100,22 +99,17 @@
                     <b><h5>${{ $drum->cost}}</h5></b> 
                     <p>Location [Settlement-name]: <b>{{ $drum->locaiton }}</b> </p>  
                     <p>{{ $drum->body }}</p> 
-                    <!-- $drum->user_id  should  become $drum->user->username  -->  
+                    <!-- "$drum->user_id" should likely become "$drum->user->username" --> 
                     <p>Posted by <b>{{ $drum->user_id }}</b> on <b>{{ $drum->created_at }}</b></p> 
                     <b>Contact: {{ $drum->contact }}</b> 
-                        <a href="#" class="bookmark">{{ Auth::user()->bookmarks()->where('drum_id', $drum->id)->first() ? Auth::user()->bookmarks()->where('drum_id', $drum->id)->first()->bookmark == 1 ? 'bookmarked' : 'bookmark' : 'bookmark'  }}</a> |
-                        <!-- @ if(Auth::user() == $drum->user)
-                            <a href="#">Delete item [to do] </a> 
-                        @ endif --> 
+                    @if (Auth::user())
+                    <a href="#" class="bookmark btn btn-success">{{ Auth::user()->bookmarks()->where('drum_id', $drum->id)->first() ? Auth::user()->bookmarks()->where('drum_id', $drum->id)->first()->bookmark == 1 ? 'bookmarked' : 'bookmark' : 'bookmark'  }}</a> |
+                    @endif  
                 </article>
             @endif 
         @endif 
     @endforeach 
 @endforeach 
 
-    <script> // may become part of a partial view [but still feels "hacky"] 
-        let token = '{{ Session::token() }}';
-        let urlBookmark = '{{ route('bookmark') }}'; 
-    </script> 
 
 @endsection 
